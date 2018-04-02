@@ -1,6 +1,5 @@
-var jwt = require('jsonwebtoken'),
+const jwt = require('jsonwebtoken'),
     config = require('../config'),
-    db = require('../services/database'),
     User = require('../models/user');
 
 // The authentication controller.
@@ -8,42 +7,22 @@ var AuthController = module.exports = {};
 
 // Register a user.
 AuthController.signUp = function (req, res) {
-    if (!req.body.email || !req.body.password) {
+    const {email, password, nickname} = req.body;
+
+    if (!email || !password) {
         res.status(404).json({
             message: 'Please provide a username and a password.'
         });
     } else {
-        var {email, password, nickname} = req.body;
-
         return User.create({email, password, nickname}).then(function (addedData) {
             res.status(200).json({
                 success: true,
                 data: {
-                    email: addedData.email,
+                    email,
                     role: addedData.role
                 }
             });
-            /*res.status(201).json({
-                message: 'Account created!'
-            });
-            console.log(arguments);
-
-            User.findOne({
-                where: {
-                    email
-                }
-            }).then((user) => {
-                delete user.password;
-                delete user.updatedAt;
-
-                res.status(200).json({
-                    success: true,
-                    data: user
-                });
-            });*/
         }).catch(function (error) {
-            console.log(error);
-            //utils.jsonError(req, res, error);
             res.status(500).json({
                 message: 'There was an error!'
             });
@@ -52,7 +31,7 @@ AuthController.signUp = function (req, res) {
 };
 
 AuthController.authenticateUser = function (req, res) {
-    var {email, password} = req.body;
+    const {email, password} = req.body;
 
     if (!email || !password) {
         res.status(404).json({
@@ -76,8 +55,7 @@ AuthController.authenticateUser = function (req, res) {
                                 email: user.email,
                                 role: user.role
                             },
-                            config.secretKey//,
-                            //{expiresIn: '30m'}
+                            config.secretKey//, {expiresIn: '30m'}
                         );
 
                         res.json({

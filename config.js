@@ -1,4 +1,7 @@
 var config = module.exports;
+
+config.serverPort = 8081;
+
 const userRoles = config.userRoles = {
     guest: 1,
     user: 2,

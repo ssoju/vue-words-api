@@ -1,5 +1,6 @@
-var { Router } = require('express');
-var config = require('../config');
+const app = require('express');
+const { Router } = require('express');
+const config = require('../config');
 // var { allowOnly }  = require('../services/routesHelper');
 
 
@@ -28,8 +29,19 @@ function allowOnly(accessLevel, callback) {
     }
 }
 
-var APIRoutes = function (passport) {
+/*
+//
+// Register API middleware
+// -----------------------------------------------------------------------------
+app.use('/graphql', expressGraphQL(req => ({
+  schema,
+  graphiql: process.env.NODE_ENV !== 'production',
+  rootValue: { request: req },
+  pretty: process.env.NODE_ENV !== 'production',
+})));
+ */
 
+var APIRoutes = function (passport) {
     router.post('/auth/register', require('../controllers/authController').signUp);
     router.post('/auth/login', require('../controllers/authController').authenticateUser);
 

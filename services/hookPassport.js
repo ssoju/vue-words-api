@@ -1,33 +1,29 @@
-var JWTStrategy = require('passport-jwt').Strategy,
+const JWTStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 
-var User = require('./../models/user'),
+const User = require('./../models/user'),
     config = require('./../config');
 
-function hookJWTStrategy(passport) {
-    var options = {
+function hookPassport (passport) {
+    passport.use(new JWTStrategy({
         secretOrKey: config.secretKey,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         ignoreExpiration: false
-    };
-
-    passport.use(new JWTStrategy(options, function (payload, callback) {
-
+    }, function (payload, callback) {
         User.findOne({
             where: {
                 email: payload.email
             }
         }).then(function (user) {
             if (!user) {
-                callback(Error('no user!!'), false);
+                callback(new Error('no user!!'), false);
                 return;
             }
-
-            console.log(callback.toString())
             callback(null, user);
         });
-
     }));
+
+    return passport.initialize();
 }
 
-module.exports = hookJWTStrategy;
+module.exports = hookPassport;

@@ -1,14 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var sequelize = require('sequelize');
-var passport = require('passport');
-var jwt = require('jsonwebtoken');
-var path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const passport = require('passport');
+const passportHook = require('./services/hookPassport');
+const app = express();
 
-var hookJWTStrategy = require('./services/passportStrategy');
-var app = express();
-
+if (process.env.NODE_ENV !== 'production') {
+    app.enable('trust proxy');
+}
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -26,13 +25,16 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 // hook up passport
-app.use(passport.initialize());
+app.use(passportHook(passport));
 
+/*
+// hook up passport
+app.use(passport.initialize());
 
 // hook the passport jwt strategy
 hookJWTStrategy(passport);
 
-/*
+
 app.use(expressJwt({
   secret: auth.jwt.secret,
   credentialsRequired: false,
@@ -40,9 +42,6 @@ app.use(expressJwt({
 }));
 app.use(passport.initialize());
 
-if (process.env.NODE_ENV !== 'production') {
-  app.enable('trust proxy');
-}
 app.get('/login/facebook',
   passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false }),
 );
@@ -69,7 +68,7 @@ app.use('/graphql', expressGraphQL(req => ({
 app.use(express.static(__dirname + '/../public'));
 
 // bundle api routes
-var router = require('./routes/api')(passport);
+const router = require('./routes/api')(passport);
 app.use('/api', router);
 
 // home route
@@ -83,5 +82,5 @@ app.get('*', function (req, res) {
 
 // start the server
 app.listen('8081', function () {
-    console.log('Magic happens at http://localhost:8888/! We are all now doomed!');
+    console.log(`Magic happens at http://localhost:${config.serverPort}/! We are all now doomed!`);
 });
