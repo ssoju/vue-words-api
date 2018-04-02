@@ -32,6 +32,38 @@ app.use(passport.initialize());
 // hook the passport jwt strategy
 hookJWTStrategy(passport);
 
+/*
+app.use(expressJwt({
+  secret: auth.jwt.secret,
+  credentialsRequired: false,
+  getToken: req => req.cookies.id_token,
+}));
+app.use(passport.initialize());
+
+if (process.env.NODE_ENV !== 'production') {
+  app.enable('trust proxy');
+}
+app.get('/login/facebook',
+  passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false }),
+);
+app.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
+  (req, res) => {
+    const expiresIn = 60 * 60 * 24 * 180; // 180 days
+    const token = jwt.sign(req.user, auth.jwt.secret, { expiresIn });
+    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+    res.redirect('/');
+  },
+);
+
+app.use('/graphql', expressGraphQL(req => ({
+  schema,
+  graphiql: process.env.NODE_ENV !== 'production',
+  rootValue: { request: req },
+  pretty: process.env.NODE_ENV !== 'production',
+})));
+
+ */
 
 // set the static files location
 app.use(express.static(__dirname + '/../public'));
