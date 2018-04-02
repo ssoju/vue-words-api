@@ -4,10 +4,12 @@ const morgan = require('morgan');
 const passport = require('passport');
 const passportHook = require('./services/hookPassport');
 const app = express();
+const config = require('./config');
 
 if (process.env.NODE_ENV !== 'production') {
     app.enable('trust proxy');
 }
+
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -76,7 +78,7 @@ app.get('*', function (req, res) {
     ///res.send('Nice meeting you.');
     //res.sendFile(path.join(__dirname, '../public/app/views/index.html'));
     res.json(500, {
-        message: ''
+        message: 'Who are you? I love you...'
     });
 });
 

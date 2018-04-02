@@ -1,4 +1,4 @@
-var config = require('../config'),
+const config = require('../config'),
     Sequelize = require('sequelize'),
     dbInfo = config.db.local,
 
@@ -10,8 +10,8 @@ var config = require('../config'),
     );
 
 function normalize(fields) {
-    for(var field in fields) {
-        for(var attr in fields[field]) {
+    for(const field in fields) {
+        for(const attr in fields[field]) {
             if (attr === 'type') {
                 fields[field][attr] = Sequelize[fields[field][attr].toUpperCase()];
                 break;
@@ -23,13 +23,13 @@ function normalize(fields) {
 }
 
 db.defineModel = function (name, attrs) {
-    var fields = attrs.fields || {};
-    var hooks = attrs.hooks || {};
-    var methods = attrs.methods || {};
+    let fields = attrs.fields || {};
+    const hooks = attrs.hooks || {};
+    const methods = attrs.methods || {};
 
     fields = normalize(fields);
 
-    var Model = db.define(name, fields, {
+    const Model = db.define(name, fields, {
         hooks: hooks
     });
 

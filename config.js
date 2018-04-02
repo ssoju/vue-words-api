@@ -8,7 +8,19 @@ const userRoles = config.userRoles = {
     admin: 4
 };
 
-config.db = require('../db.config');
+//config.db = require('../db.config');
+config.db = module.exports = {
+    local: {
+        user: '',
+        password: '',
+        name: 'worddb',
+        connection: {
+            host: '',
+            port: '3306',
+            dialect: 'mysql'
+        }
+    }
+};
 
 config.secretKey = 'comahead';
 
