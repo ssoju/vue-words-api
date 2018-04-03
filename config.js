@@ -9,13 +9,13 @@ const userRoles = config.userRoles = {
 };
 
 //config.db = require('../db.config');
-config.db = module.exports = {
+config.db = {
     local: {
-        user: '',
-        password: '',
+        user: 'comahead',
+        password: 'rock1014',
         name: 'worddb',
         connection: {
-            host: '',
+            host: 'maru.zone',
             port: '3306',
             dialect: 'mysql'
         }

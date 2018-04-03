@@ -5,6 +5,8 @@ const passport = require('passport');
 const passportHook = require('./services/hookPassport');
 const app = express();
 const config = require('./config');
+const ValidateManager = require('./services/validateManager');
+const validateManager = new ValidateManager();
 
 if (process.env.NODE_ENV !== 'production') {
     app.enable('trust proxy');
@@ -16,6 +18,8 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
+
+app.use(validateManager.provideDefaultValidator());
 
 // parse as urlencode and json
 app.use(bodyParser.urlencoded({

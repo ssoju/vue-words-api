@@ -30,7 +30,7 @@ AuthController.signUp = function (req, res) {
     }
 };
 
-AuthController.authenticateUser = function (req, res) {
+AuthController.signIn = function (req, res) {
     const {email, password} = req.body;
 
     if (!email || !password) {
@@ -76,4 +76,8 @@ AuthController.authenticateUser = function (req, res) {
             });
         });
     }
-}
+};
+
+AuthController.signOut = function () {
+
+};

@@ -12,9 +12,8 @@ router.use((req, res, next) => {
 });
 
 function authenticate(passport) {
-    return function () {
-        const result = passport.authenticate('jwt', {session: false}).apply(this, arguments);
-        return result;
+    return function (req, res, next) {
+        return passport.authenticate('jwt', {session: false}).apply(this, [req, res, next]);
     }
 }
 
