@@ -20,8 +20,6 @@ function allowOnly(accessLevel, callback) {
 }
 
 module.exports = function (routes, controller) {
-    let args = [];
-
     for(const key in routes) {
         if (!routes.hasOwnProperty(key)) { continue; }
 
@@ -33,15 +31,14 @@ module.exports = function (routes, controller) {
                 tmp.join('')
             ];
         })(key);
-        let method = router[pairs[0]];
 
         if (typeof item === 'string') {
-            method(pairs[1], controller[item]);
+            router[pairs[0]](pairs[1], controller[item]);
         } else {
             if (item.role) {
-                method(authenticate(passport), allowOnly(item.role, controller[item.process]));
+                router[pairs[0]](authenticate(passport), allowOnly(item.role, controller[item.process]));
             } else {
-                method(controller[item.process]);
+                router[pairs[0]](controller[item.process]);
             }
         }
 
