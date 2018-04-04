@@ -33,16 +33,15 @@ module.exports = function (routes, controller) {
                 tmp.join('')
             ];
         })(key);
+        let method = router[pairs[0]];
 
         if (typeof item === 'string') {
-            router[pairs[0]](pairs[1], controller[item]);
+            method(pairs[1], controller[item]);
         } else {
-            args.push(pairs[1]); // url
-
             if (item.role) {
-                router[pairs[0]](authenticate(passport), allowOnly(item.role, controller[item.process]));
+                method(authenticate(passport), allowOnly(item.role, controller[item.process]));
             } else {
-                router[pairs[0]](controller[item.process]);
+                method(controller[item.process]);
             }
         }
 
