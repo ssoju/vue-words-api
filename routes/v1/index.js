@@ -1,8 +1,10 @@
-const express = require('express'),
-    router = express.Router();
+const router = require('express').Router();
 
-router.use('/auth', require('./auth'));
-router.use('/users', require('./user'));
-//router.use('/posts', require(ROUTE_V1_PATH + 'post'));
+module.exports = function (passport) {
 
-module.exports = router;
+    router.use('/auth', require('./auth')());
+    router.use('/users', require('./user')());
+    router.use('/words', require('./user')());
+
+    return router;
+}

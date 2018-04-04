@@ -1,9 +1,10 @@
-const router = require('express').Router();
+const AuthRouter = require('../../middlewares/authRouter');
 const UserController = require('../../controllers/userController');
-let userController = new UserController();
 
-router.get('/', userController.get);
-router.get('/:id', userController.getUserInfo);
-router.post('/', userController.post);
-
-module.exports = router;
+module.exports = function () {
+    return AuthRouter({
+        'get:/:id': {role: 'user', process: 'getUserInfo'},
+        'put:/': {role: 'user', process: 'updateUserInfo'},
+        'delete:/:id': {role: 'user', process: 'deleteUser'}
+    }, new UserController());
+};

@@ -10,8 +10,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Passport
-app.use(passport.initialize());
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
@@ -27,7 +25,10 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/api/v1', v1);
+app.use('/api/v1', v1(passport));
+
+//Passport
+app.use(passport.initialize());
 
 app.use('/', function(req, res){
     res.statusCode = 200;//send the appropriate status code
