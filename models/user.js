@@ -24,7 +24,11 @@ var UserModel = db.defineModel('user', {
         role: {
             type: 'integer',
             defaultValue: config.userRoles.user
-        }
+        },
+
+        createdAt: {type: 'date'},
+
+        updatedAt: {type: 'date'}
     },
     hooks: {
         beforeValidate: function hashPassword(user) {

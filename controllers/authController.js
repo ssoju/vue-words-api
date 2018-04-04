@@ -50,7 +50,7 @@ AuthController.signIn = function (req, res) {
             } else {
                 user.comparePasswords(password, function (error, isMatch) {
                     if (isMatch && !error) {
-                        var token = jwt.sign(
+                        const token = jwt.sign(
                             {
                                 email: user.email,
                                 role: user.role

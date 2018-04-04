@@ -10,3 +10,5 @@ https://github.com/kelyvin/express-env-example/blob/master/server/routes/apis/v2
 https://www.terlici.com/2014/08/25/best-practices-express-structure.html
 
 https://codeburst.io/build-a-rest-api-for-node-mysql-2018-jwt-6957bcfc7ac9
+
+http://docs.sequelizejs.com/manual/tutorial/querying.html
