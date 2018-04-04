@@ -6,5 +6,5 @@ module.exports = function () {
         'get:/:id': {role: 'user', process: 'getUserInfo'},
         'put:/': {role: 'user', process: 'updateUserInfo'},
         'delete:/:id': {role: 'user', process: 'deleteUser'}
-    }, new UserController());
+    }, UserController);
 };

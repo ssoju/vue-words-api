@@ -11,11 +11,9 @@ module.exports = function () {
 
         'post:/signuo': 'signUp',
 
-        'get:/profile': 'getProfile',
-
         'get:/signout': {
             role: 'user',
             process: 'signOut'
         },
-    }, new AuthController());
+    }, AuthController);
 };

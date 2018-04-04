@@ -3,8 +3,10 @@ const logger       = require('morgan');
 const bodyParser   = require('body-parser');
 const passport     = require('passport');
 const v1 = require('./routes/v1');
-
 const app = express();
+
+require('dotenv').config();
+
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -52,4 +54,7 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-module.exports = app;
+// start the server
+app.listen(process.env.PORT, function () {
+    console.log(`Magic happens at http://localhost:${process.env.PORT}/! We are all now doomed!`);
+});

@@ -1,6 +1,6 @@
 const router = require('express').Router(),
     passport = require('passport'),
-    config = require('../../config');
+    config = require('../config');
 
 function authenticate(passport) {
     return function (req, res, next) {
@@ -26,21 +26,24 @@ module.exports = function (routes, controller) {
         if (!routes.hasOwnProperty(key)) { continue; }
 
         const item = routes[key];
-        let pairs = key.split(':');
-
+        let pairs = (function (key) {
+            let tmp = key.split(':');
+            return [
+                tmp.shift(),
+                tmp.join('')
+            ];
+        })(key);
 
         if (typeof item === 'string') {
-            router[pairs[0]].apply(router, [pairs[1], controller[item]]);
+            router[pairs[0]](pairs[1], controller[item]);
         } else {
             args.push(pairs[1]); // url
 
             if (item.role) {
-                args.push(authenticate(passport));
-                args.push(allowOnly(item.role, controller[item.process]));
+                router[pairs[0]](authenticate(passport), allowOnly(item.role, controller[item.process]));
             } else {
-                args.push(controller[item.process]);
+                router[pairs[0]](controller[item.process]);
             }
-            router[pairs[0]].apply(router, args);
         }
 
     }

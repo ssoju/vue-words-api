@@ -6,5 +6,5 @@ module.exports = function () {
         'get:/:id': {role: 'user', process: 'getWords'},
         'put:/': {role: 'user', process: 'updateWord'},
         'delete:/:id': {role: 'user', process: 'deleteWord'}
-    }, new WordController());
+    }, WordController);
 };
