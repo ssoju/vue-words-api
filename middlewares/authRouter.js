@@ -1,7 +1,8 @@
 const router = require('express').Router(),
+    passport = require('passport'),
     config = require('../config');
 
-function authenticate(passport) {
+function authenticate() {
     return function (req, res, next) {
         return passport.authenticate('jwt', {session: false}).apply(this, [req, res, next]);
     }

@@ -27,10 +27,12 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/api/v1', v1(passport));
+app.use('/api/v1', v1());
 
-//Passport
-app.use(passport.initialize());
+
+// hook up passport
+app.use(require('./middlewares/hookPassport')(passport));
+
 
 
 app.use('/', function(req, res){
@@ -51,7 +53,7 @@ app.use(function(err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
-    res.status(err.status || 500).json({success: false, error: err.message});
+    res.status(err.status || 500).json({success: false, error: err.toString()});
     ////onsole.log(err);
     ///res.render('error');
 });
