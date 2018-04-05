@@ -24,16 +24,24 @@ app.use(function (req, res, next) {
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
     // Pass to next layer of middleware
-    next();
+
+    //intercepts OPTIONS method
+    if ('OPTIONS' === req.method) {
+        //respond with 200
+        res.send(200);
+    }
+    else {
+        //move on
+        next();
+    }
 });
 
-app.use('/api/v1', v1());
-
-
 // hook up passport
-app.use(require('./middlewares/hookPassport')(passport));
+app.use(passport.initialize());
 
+require('./middlewares/hookPassport')(passport);
 
+app.use('/api/v1', v1());
 
 app.use('/', function(req, res){
     res.statusCode = 200;//send the appropriate status code

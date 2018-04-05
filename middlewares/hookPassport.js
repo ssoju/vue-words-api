@@ -23,7 +23,7 @@ function hookPassport (passport) {
         });
     }));
 
-    return passport.initialize();
+    return passport;
 }
 
 module.exports = hookPassport;
