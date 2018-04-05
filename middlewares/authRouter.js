@@ -1,5 +1,4 @@
 const router = require('express').Router(),
-    passport = require('passport'),
     config = require('../config');
 
 function authenticate(passport) {
@@ -10,7 +9,9 @@ function authenticate(passport) {
 
 function allowOnly(accessLevel, callback) {
     return function checkUserRole(req, res) {
+        console.log('!!!!', req.originalUrl, accessLevel);
         if (!(config.accessLevels[accessLevel] & req.user.role)) {
+            console.log('access error!!', res.originalUrl);
             res.sendStatus(403);
             return;
         }
@@ -19,29 +20,31 @@ function allowOnly(accessLevel, callback) {
     }
 }
 
-module.exports = function (routes, controller) {
-    for(const key in routes) {
-        if (!routes.hasOwnProperty(key)) { continue; }
-
-        const item = routes[key];
-        let pairs = (function (key) {
-            let tmp = key.split(':');
-            return [
-                tmp.shift(),
-                tmp.join('')
-            ];
-        })(key);
-
-        if (typeof item === 'string') {
-            router[pairs[0]](pairs[1], controller[item]);
-        } else {
-            if (item.role) {
-                router[pairs[0]](authenticate(passport), allowOnly(item.role, controller[item.process]));
-            } else {
-                router[pairs[0]](controller[item.process]);
+module.exports = function (routes, controller, passport) {
+    routes.forEach((item, i) => {
+        for (const key in item) {
+            if (!item.hasOwnProperty(key)) {
+                continue;
             }
-        }
 
-    }
+
+            const value = item[key];
+            const idx = key.indexOf(':');
+            const pairs = [key.substr(0, idx), key.substr(idx + 1)];
+
+            console.log(pairs);
+
+            if (typeof value === 'string') {
+                router[pairs[0]](pairs[1], controller[value]);
+            } else {
+                if (value.role) {
+                    router[pairs[0]](pairs[1], authenticate(passport), allowOnly(value.role, controller[value.process]));
+                } else {
+                    router[pairs[0]](pairs[1], controller[value.process]);
+                }
+            }
+
+        }
+    });
     return router;
 };

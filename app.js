@@ -27,10 +27,11 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/api/v1', v1());
+app.use('/api/v1', v1(passport));
 
 //Passport
 app.use(passport.initialize());
+
 
 app.use('/', function(req, res){
     res.statusCode = 200;//send the appropriate status code
@@ -50,9 +51,9 @@ app.use(function(err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
-    res.status(err.status || 500);
+    res.status(err.status || 500).json({success: false, error: err.message});
     ////onsole.log(err);
-    res.render('error');
+    ///res.render('error');
 });
 
 // start the server

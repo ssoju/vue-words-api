@@ -10,12 +10,15 @@ const WordController = {
         const {id} = req.params;
         let {lastId, keyword} = req.query;
 
+        console.log('!!!!');
+
         if (id) {
             WordModel.findOne({
                 where: {
                     id: id
                 }
-            }).done((word) => {
+            }).then((word) => {
+                console.log('0000');
                 res.json({
                     success: true,
                     data: word
@@ -36,7 +39,7 @@ const WordController = {
                         [Op.gt]: lastId || 0
                     }
                 },
-            }).done((words) => {
+            }).then((words) => {
                 res.json({
                     success: true,
                     data: words

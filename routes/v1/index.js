@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
-module.exports = function () {
+module.exports = function (passport) {
 
-    router.use('/auth', require('./auth')());
-    router.use('/users', require('./user')());
-    router.use('/words', require('./word')());
+    router.use('/auth', require('./auth')(passport));
+    router.use('/users', require('./user')(passport));
+    router.use('/words', require('./word')(passport));
 
     return router;
 };
