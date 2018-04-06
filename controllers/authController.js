@@ -32,7 +32,7 @@ AuthController.signUp = function (req, res) {
 
 AuthController.signIn = function (req, res) {
     const {email, password} = req.body;
-    
+
     res.set('Authorization', '');
 
     if (!email || !password) {
