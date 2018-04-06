@@ -32,12 +32,15 @@ AuthController.signUp = function (req, res) {
 
 AuthController.signIn = function (req, res) {
     const {email, password} = req.body;
+    
+    res.set('Authorization', '');
 
     if (!email || !password) {
         res.status(404).json({
             message: 'Username and password are needed!'
         });
     } else {
+
         User.findOne({
             where: {
                 email
@@ -58,7 +61,7 @@ AuthController.signIn = function (req, res) {
                             config.secretKey//, {expiresIn: '30m'}
                         );
 
-                        res.json({
+                        res.set('Authorization', 'Bearer ' + token).json({
                             success: true,
                             token: token
                         });
