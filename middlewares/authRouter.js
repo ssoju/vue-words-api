@@ -31,8 +31,6 @@ module.exports = function (routes, controller) {
             const idx = key.indexOf(':');
             const pairs = [key.substr(0, idx), key.substr(idx + 1)];
 
-            console.log('pairs', pairs);
-
             if (typeof value === 'string') {
                 router[pairs[0]](pairs[1], controller[value]);
             } else {
