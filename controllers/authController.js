@@ -82,14 +82,24 @@ AuthController.signIn = function (req, res) {
     }
 };
 
-AuthController.signOut = function () {
-
+AuthController.signOut = function (req, res) {
+    res.json({
+        success: true,
+    });
 };
 
-AuthController.userInfo = function () {
-    User.findOne({
+AuthController.userInfo = function (req, res) {
+    res.json({
+        success: true,
+        data: {
+            email: req.user.email,
+            nickname: req.user.nickname,
+            role: req.user.role
+        }
+    });
+    /*User.findOne({
         where: {
-            email
+            email: req.user.email
         }
     }).then((user) => {
         if (!user) {
@@ -103,9 +113,11 @@ AuthController.userInfo = function () {
             res.json({
                 success: true,
                 data: {
-                    ...user
+                    email: user.email,
+					nickname: user.nickname,
+					role: user.role
                 }
             });
         }
-    });
+    });*/
 };
