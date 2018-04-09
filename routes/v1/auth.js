@@ -6,5 +6,6 @@ module.exports = AuthRouter([
     {'post:/signin': 'signIn'},
     {'post:/register': 'signUp'},
     {'post:/signuo': 'signUp'},
+    {'get:/user': 'userInfo'},
     {'get:/signout': {role: 'user', process: 'signOut'}}
 ], AuthController);

@@ -56,6 +56,7 @@ AuthController.signIn = function (req, res) {
                         const token = jwt.sign(
                             {
                                 email: user.email,
+                                nickname: user.nickname,
                                 role: user.role
                             },
                             config.secretKey//, {expiresIn: '30m'}
@@ -83,4 +84,28 @@ AuthController.signIn = function (req, res) {
 
 AuthController.signOut = function () {
 
+};
+
+AuthController.userInfo = function () {
+    User.findOne({
+        where: {
+            email
+        }
+    }).then((user) => {
+        if (!user) {
+            res.set('Authorization', '');
+            res.status(404).json({
+                message: 'Authentication failed!'
+            });
+        } else {
+            delete user.password;
+
+            res.json({
+                success: true,
+                data: {
+                    ...user
+                }
+            });
+        }
+    });
 };
